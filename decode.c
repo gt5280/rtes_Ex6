@@ -2,6 +2,7 @@
 #include "decode.h"
 
 #include <stdint.h>
+#include <stdio.h>
 
 #define DOT_LENGTH (3)
 #define DOT_MIN (DOT_LENGTH - 1)
@@ -67,13 +68,13 @@ const character_t characters[NUMBER_OF_CHARACTERS] =
     { '8', 5, {morse_dash, morse_dash, morse_dash, morse_dot, morse_dot} },
     { '9', 5, {morse_dash, morse_dash, morse_dash, morse_dash, morse_dot} },
     { '0', 5, {morse_dash, morse_dash, morse_dash, morse_dash, morse_dash} }
-}
+};
 
 morse_t current_sequence[MAX_MORSE_SEQUENCE] = {};
 
 static void reset_current_sequence(void)
 {
-    for (uint8_t i = 0; i < MAX_MORSE_SEQUENCE)
+    for (uint8_t i = 0; i < MAX_MORSE_SEQUENCE; i++)
     {
         current_sequence[i] = morse_empty;
     }
@@ -118,7 +119,7 @@ void decode_init(void)
     // as the code has to do the comparison with every character
     current_sequence[0] = morse_dot;
     current_sequence[1] = morse_dot;
-    current_sequence[2] = morse_dot;
+    current_sequence[2] = morse_dash;
     current_sequence[3] = morse_dot;
     current_sequence[4] = morse_dot;
     current_sequence[5] = morse_letter_end;    
@@ -138,11 +139,11 @@ void decode_run(bool light_on)
         char c = compare_sequence();
         if (c)
         {
-            printf("%c", c);
+            printf("%c\n", c);
         }
         else
         {
-            printf("No match!");
+            printf("No match!\n");
         }
 
         reset_current_sequence();
