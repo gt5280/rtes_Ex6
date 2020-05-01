@@ -156,22 +156,6 @@ void decode_run(bool light_on)
     {
         off_count++;
     }
-    
-
-    // State Action
-    switch (current_state)
-    {
-    case state_idle:
-        break;
-    case state_start:
-        break;
-    case state_on:
-        break;
-    case state_off:
-        break;
-    default:
-        break;
-    }
 
     // State Update
     switch (current_state)
@@ -276,6 +260,5 @@ void decode_run(bool light_on)
             reset_current_sequence();
         }
     }
-    
-
 }
+
