@@ -5,6 +5,9 @@
 #include <stdbool.h>
 #include <stdint.h>
 
+#define MAX_MORSE_SEQUENCE (6) // The longest sequence to determine a character is 5, + 1 for 'morse_letter_end' after
+#define NUMBER_OF_CHARACTERS (36) // 26 letters + 10 numbers
+
 typedef enum
 {
     morse_empty, // a morse character has not been received yet
@@ -134,7 +137,7 @@ static void send_char(char c)
 
 static void send_word(char* str, uint8_t len)
 {
-    for (uint8_t i = 0; i < len)
+    for (uint8_t i = 0; i < len; i++)
     {
         if (i != 0)
         {
@@ -146,8 +149,8 @@ static void send_word(char* str, uint8_t len)
 
 int main()
 {
-    struct timeval initial_time_val;
-    struct timeval final_time_val;
+    //struct timeval initial_time_val;
+    //struct timeval final_time_val;
 
     decode_init();
 
@@ -165,9 +168,12 @@ int main()
     decode_run(false);
     decode_run(false);
 
-    send_word("test", 4);
+    send_word("TEST", 4);
     send_word_break();
-    send_word("abcdefghijklmnopqrstuvwxyz0123456789", 36);
+    send_word("ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890", 36);
+    send_word_break();
+
+    decode_run(true);
     
     return 0;
 }

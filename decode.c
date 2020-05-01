@@ -246,9 +246,12 @@ void decode_run(bool light_on)
         sequence_position++;
         if (sequence_position >= MAX_MORSE_SEQUENCE)
         {
-            printf("Error! received more dots and dashes than expected!");
-            reset_current_sequence();
-            latest_symbol = morse_empty;
+            if (latest_symbol != morse_letter_end && latest_symbol != morse_word_end)
+            {
+                printf("Error! received more dots and dashes than expected!\n");
+                reset_current_sequence();
+                latest_symbol = morse_empty;
+            }
         }
 
         if (latest_symbol == morse_letter_end || latest_symbol == morse_word_end)
