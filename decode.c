@@ -52,7 +52,7 @@ typedef struct
     morse_t sequence[MAX_MORSE_SEQUENCE];
 } character_t;
 
-const character_t characters[NUMBER_OF_CHARACTERS] = 
+static const character_t characters[NUMBER_OF_CHARACTERS] = 
 {
     { 'A', 2, {morse_dot, morse_dash} },
     { 'B', 4, {morse_dash, morse_dot, morse_dot, morse_dot} },
@@ -139,16 +139,6 @@ static char compare_sequence(void)
 void decode_init(void)
 {
     reset_current_sequence();
-
-    // This section will not be in the released code.
-    // I am intializing to an invalid character to try to estimate the WCET
-    // as the code has to do the comparison with every character
-    current_sequence[0] = morse_dot;
-    current_sequence[1] = morse_dot;
-    current_sequence[2] = morse_dash;
-    current_sequence[3] = morse_dot;
-    current_sequence[4] = morse_dot;
-    current_sequence[5] = morse_letter_end;    
 }
 
 void decode_run(bool light_on)
