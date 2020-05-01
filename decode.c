@@ -93,17 +93,9 @@ const character_t characters[NUMBER_OF_CHARACTERS] =
 };
 
 morse_t current_sequence[MAX_MORSE_SEQUENCE] = {};
-bool on_off_buffer[MAX_ON_OFF_LENGTH] = {};
+uint8_t sequence_position = 0;
 
 state_t current_state = state_idle;
-
-static void reset_on_off_buffer(void)
-{
-    for (uint8_t i = 0; i < MAX_ON_OFF_LENGTH; i++)
-    {
-        on_off_buffer[i] = morse_empty;
-    }
-}
 
 static void reset_current_sequence(void)
 {
@@ -111,6 +103,7 @@ static void reset_current_sequence(void)
     {
         current_sequence[i] = morse_empty;
     }
+    sequence_position = 0;
 }
 
 // This function checks the current sequence against all the characters.
@@ -258,6 +251,16 @@ void decode_run(bool light_on)
     
     if (latest_symbol != morse_empty)
     {
+        // A symbol was detected! add it to our buffer
+        current_sequence[sequence_position] = latest_symbol;
+        sequence_position++;
+        if (sequence_position >= MAX_MORSE_SEQUENCE)
+        {
+            printf("Error! received more dots and dashes than expected!");
+            reset_current_sequence();
+            latest_symbol = morse_empty;
+        }
+
         if (latest_symbol == morse_letter_end || latest_symbol == morse_word_end)
         {
             char c = compare_sequence();
