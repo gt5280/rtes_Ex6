@@ -147,6 +147,14 @@ static void send_word(char* str, uint8_t len)
     }
 }
 
+static void send_idle(void)
+{
+    for (uint8_t i = 0; i < 13; i++)
+    {
+        decode_run(true);
+    }
+}
+
 int main()
 {
     //struct timeval initial_time_val;
@@ -163,9 +171,12 @@ int main()
     decode_run(true);
     decode_run(true);
 
+    decode_run(true);
+    decode_run(true);
+    decode_run(true);
+
+
     // send start signal!
-    decode_run(false);
-    decode_run(false);
     decode_run(false);
 
     send_word("TEST", 4);
@@ -173,7 +184,17 @@ int main()
     send_word("ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890", 36);
     send_word_break();
 
-    decode_run(true);
+    send_idle();
+
+    // send start signal!
+    decode_run(false);
+
+    send_word("RESTART", 7);
+    send_word_break();
+
+    send_idle();
+
+
     
     return 0;
 }
