@@ -5,18 +5,20 @@
 #include <fcntl.h>
 #include <sys/stat.h>
 #include <mqueue.h>
+#include <stdio.h>
 
 #define DECODE_TASK_PRIORITY (80)
 
 #define SNDRCV_MQ "/send_receive_mq"
 #define MAX_MSG_SIZE 256
 
+#define ERROR (-1)
+
 struct mq_attr mq_attr;
 
 pthread_t decode_thread;
-threadParams_t decode_param;
 pthread_attr_t decode_attr;
-struct sched_param decode_sched_param;
+struct sched_param decode_param;
 
 void* decode_task(void* param)
 {
@@ -30,7 +32,7 @@ void* decode_task(void* param)
     while (1)
     {
         // wait for message
-        nbytes = mq_receive(mymq, buffer, MAX_MSG_SIZE, &prio)
+        nbytes = mq_receive(mymq, buffer, MAX_MSG_SIZE, &prio);
         if(nbytes== ERROR)
         {
             perror("mq_receive");
@@ -62,10 +64,9 @@ bool decode_task_start(void)
     pthread_attr_setinheritsched(&decode_attr, PTHREAD_EXPLICIT_SCHED);
     pthread_attr_setschedpolicy(&decode_attr, SCHED_FIFO);
 
-    decode_sched_param.sched_priority = DECODE_TASK_PRIORITY;
+    decode_param.sched_priority = DECODE_TASK_PRIORITY;
     pthread_attr_setschedparam(&decode_attr, &decode_param);
 
-    decode_param.threadIdx=i;
 
     pthread_create(&decode_thread,   // pointer to thread descriptor
                     &decode_attr,     // use default attributes

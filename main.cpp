@@ -15,6 +15,8 @@
 #include "cstdlib"
 #include "iostream"
 #include <sstream>
+#include "decode_task.h"
+#include <mqueue.h>
 
 
 #include <opencv2/core/core.hpp>
@@ -278,6 +280,10 @@ void* RoI(void* param){
 /*------------------------------------------process------------------------------------------*/
 void* proc(void* param)
 {
+  mqd_t mymq = decode_task_init_message_queue();
+  char on;
+  unsigned prio = 30;
+  int nbytes;
 
 while(!abortTest){
 
@@ -290,10 +296,18 @@ while(!abortTest){
 	next_= grayImage.at<char>( maxIdx ); //sample
 		
 	if( off_ < next_ ){
-		cout << "On" << endl;
+		//cout << "On" << endl;
+		on = 1;
 	}
 	else{
-		cout << "Off" << endl;
+		//cout << "Off" << endl;
+		on = 0;
+	}
+	
+	nbytes = mq_send(mymq, &on, 1, prio);
+	if (nbytes == -1)
+	{
+	  perror("mq_send");
 	}
 
 	cv::imwrite( "next_.ppm", grayImage );
@@ -433,6 +447,10 @@ int main(void){
                 logging, // thread function entry point
                 NULL // parameters to pass in
                 );
+		
+		
+  /*-----------------------------Decoding-------------------------------*/
+  decode_task_start();
 
   printf("Starting Sequencer\n");
 

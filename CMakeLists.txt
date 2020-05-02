@@ -1,11 +1,11 @@
 cmake_minimum_required (VERSION 2.8)
 
-project (calibrate)
+project (morse_decoder)
 
 find_package(OpenCV REQUIRED)
 
 include_directories(${OpenCV_INCLUDE_DIRS})
 
-add_executable(calibrate calibrate.cpp *.c)
+add_executable(morse_decoder main.cpp decode.c decode_task.c)
 
-target_Link_Libraries(calibrate ${OpenCV_LIBS} pthread)
+target_Link_Libraries(morse_decoder ${OpenCV_LIBS} rt pthread)
