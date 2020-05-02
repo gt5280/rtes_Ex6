@@ -6,6 +6,6 @@ find_package(OpenCV REQUIRED)
 
 include_directories(${OpenCV_INCLUDE_DIRS})
 
-add_executable(calibrate calibrate.cpp)
+add_executable(calibrate calibrate.cpp *.c)
 
 target_Link_Libraries(calibrate ${OpenCV_LIBS} pthread)
