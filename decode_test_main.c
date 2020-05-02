@@ -48,7 +48,7 @@ static const character_t characters[NUMBER_OF_CHARACTERS] =
     { 'T', 1, {morse_dash} },
     { 'U', 3, {morse_dot, morse_dot, morse_dash} },
     { 'V', 4, {morse_dot, morse_dot, morse_dot, morse_dash} },
-    { 'W', 3, {morse_dot, morse_dot, morse_dot, morse_dash} },
+    { 'W', 3, {morse_dot, morse_dash, morse_dash} },
     { 'X', 4, {morse_dash, morse_dot, morse_dot, morse_dash} },
     { 'Y', 4, {morse_dash, morse_dot, morse_dash, morse_dash} },
     { 'Z', 4, {morse_dash, morse_dash, morse_dot, morse_dot} },
